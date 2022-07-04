@@ -11,78 +11,79 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class PeriodsController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public UsersController(MIDPlatformContext context)
+        public PeriodsController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Users
+        // GET: api/Periods
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
         {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            return await _context.Users.ToListAsync();
-        }
-
-        //READ
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(string id)
-        {
-          if (_context.Users == null)
+          if (_context.Periods == null)
           {
               return NotFound();
           }
-            var user = await _context.Users.FindAsync(id).Preserve();
+            return await _context.Periods.ToListAsync();
+        }
 
-            if (user == null)
+        //READ
+        // GET: api/Periods/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Period>> GetPeriod(int id)
+        {
+          if (_context.Periods == null)
+          {
+              return NotFound();
+          }
+            var period = await _context.Periods.FindAsync(id);
+
+            if (period == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return period;
         }
 
         //UPDATE
-        // PUT: api/Users/5
+        // PUT: api/Periods/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
+        public async Task<IActionResult> PutPeriod(int id, Period period)
         {
-            if (id != user.Username)
+            if (id != period.PeriodId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(user).State = EntityState.Modified;
+            //_context.Entry(period).State = EntityState.Modified;
 
-            User modifiedUser = _context.Users.FirstOrDefault(u => u.Username == id);
-            if (modifiedUser == null)
+            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
+            if (modifiedPeriod == null)
             {
                 return NotFound();
             }
 
-            modifiedUser.Password = user.Password;
-            modifiedUser.Name = user.Name;
-            modifiedUser.Email = user.Email;
-            modifiedUser.Active = user.Active;
+            modifiedPeriod.Code = period.Code;
+            modifiedPeriod.StartDate = period.StartDate;
+            modifiedPeriod.EndDate = period.EndDate;
+            modifiedPeriod.ActiveForSm = period.ActiveForSm;
+            modifiedPeriod.Canceled = period.Canceled;
 
             try
             {
-               _context.Users.Update(modifiedUser);
-               await _context.SaveChangesAsync();
+                _context.Periods.Update(modifiedPeriod);
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!PeriodExists(id))
                 {
                     return NotFound();
                 }
@@ -96,16 +97,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Users
+        // POST: api/Periods
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody]User user)
+        public async Task<ActionResult<Period>> PostPeriod(Period period)
         {
-            if (_context.Users == null)
+            if (_context.Periods == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Users'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
             }
-            _context.Users.Add(user);
+            _context.Periods.Add(period);
             try
             {
                 await _context.SaveChangesAsync();
@@ -115,34 +116,33 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetUser", new { id = user.Username }, user);
+            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
         }
 
         //DELETE
-        // DELETE: api/Users/5
+        // DELETE: api/Periods/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id, bool disable = false)
+        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
         {
-            if (_context.Users == null)
+            if (_context.Periods == null)
             {
                 return NotFound();
             }
-
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var period = await _context.Periods.FindAsync(id);
+            if (period == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                user.Active = false;
-                _context.Users.Update(user);
+                period.ActiveForSm = false;
+                _context.Periods.Update(period);
             }
             else
             {
-                _context.Users.Remove(user);
+                _context.Periods.Remove(period);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    user.Active = false;
-                    _context.Users.Update(user);
+                    period.ActiveForSm = false;
+                    _context.Periods.Update(period);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool UserExists(string id)
+        private bool PeriodExists(int id)
         {
-            return (_context.Users?.Any(e => e.Username == id)).GetValueOrDefault();
+            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
         }
     }
 }

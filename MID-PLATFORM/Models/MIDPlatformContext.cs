@@ -615,12 +615,12 @@ namespace MID_PLATFORM.Models
 
                 entity.Property(e => e.Password).HasMaxLength(100);
 
-                entity.Property(e => e.Timestamp);
-                    //.IsRowVersion();
-                    //.IsConcurrencyToken();
+                entity.Property(e => e.Timestamp)
+                    .IsRowVersion()
+                    .IsConcurrencyToken();
 
                 entity.Property(e => e.User1)
-                    //.HasMaxLength(50)
+                    .HasMaxLength(50)
                     .HasColumnName("User");
 
                 entity.HasOne(d => d.User1Navigation)

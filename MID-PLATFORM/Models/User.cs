@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using MID_PLATFORM.Models;
 using Newtonsoft.Json;
@@ -35,6 +36,7 @@ namespace MID_PLATFORM.Models
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
         public bool? Active { get; set; }
+        [Timestamp]
         public byte[]? Timestamp { get; set; }// = null!;
         public string User1 { get; set; } = null!;
 

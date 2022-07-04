@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MID_PLATFORM.Models
 {
@@ -19,6 +20,7 @@ namespace MID_PLATFORM.Models
         public bool BillableExceededHours { get; set; }
         public int Status { get; set; }
         public bool? Active { get; set; }
+        [Timestamp]
         public byte[] Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 

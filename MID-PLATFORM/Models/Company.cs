@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MID_PLATFORM.Models
 {
@@ -16,6 +17,7 @@ namespace MID_PLATFORM.Models
         public string Name { get; set; } = null!;
         public string Country { get; set; } = null!;
         public bool? Active { get; set; }
+        [Timestamp]
         public byte[] Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 

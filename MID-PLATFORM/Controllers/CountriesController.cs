@@ -11,78 +11,77 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CountriesController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public UsersController(MIDPlatformContext context)
+        public CountriesController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Users
+        // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
-            if (_context.Users == null)
+            if (_context.Countries == null)
             {
                 return NotFound();
             }
-            return await _context.Users.ToListAsync();
+            return await _context.Countries.ToListAsync();
         }
 
         //READ
-        // GET: api/Users/5
+        // GET: api/Countries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(string id)
+        public async Task<ActionResult<Country>> GetCountry(int id)
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            var user = await _context.Users.FindAsync(id).Preserve();
+            if (_context.Countries == null)
+            {
+                return NotFound();
+            }
+            var country = await _context.Countries.FindAsync(id);
 
-            if (user == null)
+            if (country == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return country;
         }
 
         //UPDATE
-        // PUT: api/Users/5
+        // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
+        public async Task<IActionResult> PutCountry(int id, Country country)
         {
-            if (id != user.Username)
+            if (id != country.CountryId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(user).State = EntityState.Modified;
+            //_context.Entry(country).State = EntityState.Modified;
 
-            User modifiedUser = _context.Users.FirstOrDefault(u => u.Username == id);
-            if (modifiedUser == null)
+            Country modifiedCountry = _context.Countries.FirstOrDefault(c => c.CountryId == id);
+            if(modifiedCountry == null)
             {
                 return NotFound();
             }
 
-            modifiedUser.Password = user.Password;
-            modifiedUser.Name = user.Name;
-            modifiedUser.Email = user.Email;
-            modifiedUser.Active = user.Active;
+            modifiedCountry.CountryCode = country.CountryCode;
+            modifiedCountry.Name = country.Name;
+            modifiedCountry.Active = country.Active;
 
             try
             {
-               _context.Users.Update(modifiedUser);
-               await _context.SaveChangesAsync();
+                _context.Countries.Update(modifiedCountry);
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!CountryExists(id))
                 {
                     return NotFound();
                 }
@@ -96,16 +95,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Users
+        // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody]User user)
+        public async Task<ActionResult<Country>> PostCountry(Country country)
         {
-            if (_context.Users == null)
+            if (_context.Countries == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Users'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.Countries'  is null.");
             }
-            _context.Users.Add(user);
+            _context.Countries.Add(country);
             try
             {
                 await _context.SaveChangesAsync();
@@ -115,34 +114,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetUser", new { id = user.Username }, user);
+            return CreatedAtAction("GetCountry", new { id = country.CountryId }, country);
         }
 
         //DELETE
-        // DELETE: api/Users/5
+        // DELETE: api/Countries/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id, bool disable = false)
+        public async Task<IActionResult> DeleteCountry(int id, bool disable = false)
         {
-            if (_context.Users == null)
+            if (_context.Countries == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var country = await _context.Countries.FindAsync(id);
+            if (country == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                user.Active = false;
-                _context.Users.Update(user);
+                country.Active = false;
+                _context.Countries.Update(country);
             }
             else
             {
-                _context.Users.Remove(user);
+                _context.Countries.Remove(country);
             }
 
             try
@@ -153,8 +152,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    user.Active = false;
-                    _context.Users.Update(user);
+                    country.Active = false;
+                    _context.Countries.Update(country);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +170,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool UserExists(string id)
+        private bool CountryExists(int id)
         {
-            return (_context.Users?.Any(e => e.Username == id)).GetValueOrDefault();
+            return (_context.Countries?.Any(e => e.CountryId == id)).GetValueOrDefault();
         }
     }
 }

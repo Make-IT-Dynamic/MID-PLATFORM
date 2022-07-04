@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MID_PLATFORM.Models
 {
@@ -14,10 +15,11 @@ namespace MID_PLATFORM.Models
         public string CountryCode { get; set; } = null!;
         public string Name { get; set; } = null!;
         public bool? Active { get; set; }
-        public byte[] Timestamp { get; set; } = null!;
+        [Timestamp]
+        public byte[]? Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 
-        public virtual User UserNavigation { get; set; } = null!;
+        public virtual User? UserNavigation { get; set; } = null!;
         public virtual ICollection<Company> Companies { get; set; }
     }
 }
