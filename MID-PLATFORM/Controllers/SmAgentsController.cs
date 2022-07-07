@@ -11,79 +11,80 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class SmAgentsController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public SmAgentsController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/SmAgents
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<SmAgent>>> GetSmAgents()
         {
-          if (_context.Periods == null)
+          if (_context.SmAgents == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.SmAgents.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/SmAgents/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<SmAgent>> GetSmAgent(int id)
         {
-          if (_context.Periods == null)
+          if (_context.SmAgents == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var smAgent = await _context.SmAgents.FindAsync(id);
 
-            if (period == null)
+            if (smAgent == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return smAgent;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/SmAgents/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutSmAgent(int id, SmAgent smAgent)
         {
-            if (id != period.PeriodId)
+            if (id != smAgent.AgentId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(smAgent).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            SmAgent modifiedSMAgent = _context.SmAgents.FirstOrDefault(u => u.AgentId == id);
+            if (modifiedSMAgent == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedSMAgent.Code = smAgent.Code;
+            modifiedSMAgent.Username = smAgent.Username;
+            modifiedSMAgent.Name = smAgent.Name;
+            modifiedSMAgent.Email = smAgent.Email;
+            modifiedSMAgent.HourCost = smAgent.HourCost;
+            modifiedSMAgent.Active = smAgent.Active;
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.SmAgents.Update(modifiedSMAgent);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!SmAgentExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +98,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/SmAgents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<SmAgent>> PostSmAgent(SmAgent smAgent)
         {
-            if (_context.Periods == null)
+            if (_context.SmAgents == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.SmAgents'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.SmAgents.Add(smAgent);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +117,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetSmAgent", new { id = smAgent.AgentId }, smAgent);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/SmAgents/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteSmAgent(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.SmAgents == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var smAgent = await _context.SmAgents.FindAsync(id);
+            if (smAgent == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                smAgent.Active = false;
+                _context.SmAgents.Update(smAgent);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.SmAgents.Remove(smAgent);
             }
 
             try
@@ -153,8 +155,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    smAgent.Active = false;
+                    _context.SmAgents.Update(smAgent);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +173,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool SmAgentExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.SmAgents?.Any(e => e.AgentId == id)).GetValueOrDefault();
         }
     }
 }

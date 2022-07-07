@@ -12,17 +12,17 @@ namespace MID_PLATFORM.Models
             SmTasks = new HashSet<SmTask>();
         }
 
-        public int PersonId { get; set; }
+        public int? PersonId { get; set; }
         public int Company { get; set; }
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
         public bool? Active { get; set; }
         [Timestamp]
-        public byte[] Timestamp { get; set; } = null!;
+        public byte[]? Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 
-        public virtual Company CompanyNavigation { get; set; } = null!;
-        public virtual User UserNavigation { get; set; } = null!;
+        public virtual Company? CompanyNavigation { get; set; } = null!;
+        public virtual User? UserNavigation { get; set; } = null!;
         public virtual ICollection<SmContract> SmContracts { get; set; }
         public virtual ICollection<SmTask> SmTasks { get; set; }
     }

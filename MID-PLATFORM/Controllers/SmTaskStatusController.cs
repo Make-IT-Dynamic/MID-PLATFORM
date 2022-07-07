@@ -11,79 +11,78 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class SmTaskStatusController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public SmTaskStatusController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/SmTaskStatus
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<SmTaskStatus>>> GetSmTaskStatuses()
         {
-          if (_context.Periods == null)
+          if (_context.SmTaskStatuses == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.SmTaskStatuses.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/SmTaskStatus/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<SmTaskStatus>> GetSmTaskStatus(int id)
         {
-          if (_context.Periods == null)
+          if (_context.SmTaskStatuses == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var smTaskStatus = await _context.SmTaskStatuses.FindAsync(id);
 
-            if (period == null)
+            if (smTaskStatus == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return smTaskStatus;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/SmTaskStatus/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutSmTaskStatus(int id, SmTaskStatus smTaskStatus)
         {
-            if (id != period.PeriodId)
+            if (id != smTaskStatus.StatusId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(smTaskStatus).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            SmTaskStatus modifiedSmTaskStatus = _context.SmTaskStatuses.FirstOrDefault(u => u.StatusId == id);
+            if (modifiedSmTaskStatus == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedSmTaskStatus.Description = smTaskStatus.Description;
+            modifiedSmTaskStatus.Closed = smTaskStatus.Closed;
+            modifiedSmTaskStatus.Active = smTaskStatus.Active;
+
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.SmTaskStatuses.Update(modifiedSmTaskStatus);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!SmTaskStatusExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +96,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/SmTaskStatus
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<SmTaskStatus>> PostSmTaskStatus(SmTaskStatus smTaskStatus)
         {
-            if (_context.Periods == null)
+            if (_context.SmTaskStatuses == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.SmTaskStatuses'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.SmTaskStatuses.Add(smTaskStatus);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +115,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetSmTaskStatus", new { id = smTaskStatus.StatusId }, smTaskStatus);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/SmTaskStatus/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteSmTaskStatus(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.SmTaskStatuses == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var smTaskStatus = await _context.SmTaskStatuses.FindAsync(id);
+            if (smTaskStatus == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                smTaskStatus.Active = false;
+                _context.SmTaskStatuses.Update(smTaskStatus);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.SmTaskStatuses.Remove(smTaskStatus);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    smTaskStatus.Active = false;
+                    _context.SmTaskStatuses.Update(smTaskStatus);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool SmTaskStatusExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.SmTaskStatuses?.Any(e => e.StatusId == id)).GetValueOrDefault();
         }
     }
 }

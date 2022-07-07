@@ -11,79 +11,78 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class SmTaskTypesController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public SmTaskTypesController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/SmTaskTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<SmTaskType>>> GetSmTaskTypes()
         {
-          if (_context.Periods == null)
+          if (_context.SmTaskTypes == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.SmTaskTypes.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/SmTaskTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<SmTaskType>> GetSmTaskType(int id)
         {
-          if (_context.Periods == null)
+          if (_context.SmTaskTypes == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var smTaskType = await _context.SmTaskTypes.FindAsync(id);
 
-            if (period == null)
+            if (smTaskType == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return smTaskType;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/SmTaskTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutSmTaskType(int id, SmTaskType smTaskType)
         {
-            if (id != period.PeriodId)
+            if (id != smTaskType.TaskTypeId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(smTaskType).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            SmTaskType modifiedSmTaskType = _context.SmTaskTypes.FirstOrDefault(u => u.TaskTypeId == id);
+            if (modifiedSmTaskType == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedSmTaskType.Description = smTaskType.Description;
+            modifiedSmTaskType.Active = smTaskType.Active;
+
+
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.SmTaskTypes.Update(modifiedSmTaskType);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!SmTaskTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +96,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/SmTaskTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<SmTaskType>> PostSmTaskType(SmTaskType smTaskType)
         {
-            if (_context.Periods == null)
+            if (_context.SmTaskTypes == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.SmTaskTypes'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.SmTaskTypes.Add(smTaskType);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +115,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetSmTaskType", new { id = smTaskType.TaskTypeId }, smTaskType);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/SmTaskTypes/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteSmTaskType(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.SmTaskTypes == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var smTaskType = await _context.SmTaskTypes.FindAsync(id);
+            if (smTaskType == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                smTaskType.Active = false;
+                _context.SmTaskTypes.Update(smTaskType);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.SmTaskTypes.Remove(smTaskType);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    smTaskType.Active = false;
+                    _context.SmTaskTypes.Update(smTaskType);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool SmTaskTypeExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.SmTaskTypes?.Any(e => e.TaskTypeId == id)).GetValueOrDefault();
         }
     }
 }

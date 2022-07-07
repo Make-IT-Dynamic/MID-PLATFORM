@@ -11,79 +11,78 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class SmWorkRecordTypesController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public SmWorkRecordTypesController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/SmWorkRecordTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<SmWorkRecordType>>> GetSmWorkRecordTypes()
         {
-          if (_context.Periods == null)
+          if (_context.SmWorkRecordTypes == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.SmWorkRecordTypes.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/SmWorkRecordTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<SmWorkRecordType>> GetSmWorkRecordType(int id)
         {
-          if (_context.Periods == null)
+          if (_context.SmWorkRecordTypes == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var smWorkRecordType = await _context.SmWorkRecordTypes.FindAsync(id);
 
-            if (period == null)
+            if (smWorkRecordType == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return smWorkRecordType;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/SmWorkRecordTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutSmWorkRecordType(int id, SmWorkRecordType smWorkRecordType)
         {
-            if (id != period.PeriodId)
+            if (id != smWorkRecordType.WorkRecordTypeId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(smWorkRecordType).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            SmWorkRecordType modifiedSmWorkRecordType = _context.SmWorkRecordTypes.FirstOrDefault(u => u.WorkRecordTypeId == id);
+            if (modifiedSmWorkRecordType == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedSmWorkRecordType.Description = smWorkRecordType.Description;
+            modifiedSmWorkRecordType.Billable = smWorkRecordType.Billable;
+            modifiedSmWorkRecordType.Active = smWorkRecordType.Active;
+
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.SmWorkRecordTypes.Update(modifiedSmWorkRecordType);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!SmWorkRecordTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +96,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/SmWorkRecordTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<SmWorkRecordType>> PostSmWorkRecordType(SmWorkRecordType smWorkRecordType)
         {
-            if (_context.Periods == null)
+            if (_context.SmWorkRecordTypes == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.SmWorkRecordTypes'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.SmWorkRecordTypes.Add(smWorkRecordType);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +115,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetSmWorkRecordType", new { id = smWorkRecordType.WorkRecordTypeId }, smWorkRecordType);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/SmWorkRecordTypes/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteSmWorkRecordType(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.SmWorkRecordTypes == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var smWorkRecordType = await _context.SmWorkRecordTypes.FindAsync(id);
+            if (smWorkRecordType == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                smWorkRecordType.Active = false;
+                _context.SmWorkRecordTypes.Update(smWorkRecordType);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.SmWorkRecordTypes.Remove(smWorkRecordType);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    smWorkRecordType.Active = false;
+                    _context.SmWorkRecordTypes.Update(smWorkRecordType);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool SmWorkRecordTypeExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.SmWorkRecordTypes?.Any(e => e.WorkRecordTypeId == id)).GetValueOrDefault();
         }
     }
 }

@@ -145,6 +145,10 @@ namespace MID_PLATFORM.Models
 
             modelBuilder.Entity<Period>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ActiveForSm)
                     .IsRequired()
                     .HasColumnName("ActiveForSM")
@@ -303,6 +307,10 @@ namespace MID_PLATFORM.Models
 
                 entity.ToTable("SM_ContractLimits");
 
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Date).HasColumnType("date");
 
                 entity.Property(e => e.Description).HasMaxLength(100);
@@ -404,6 +412,10 @@ namespace MID_PLATFORM.Models
 
             modelBuilder.Entity<SmTask>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.HasKey(e => e.TaskId);
 
                 entity.ToTable("SM_Tasks");
@@ -529,6 +541,10 @@ namespace MID_PLATFORM.Models
 
             modelBuilder.Entity<SmWorkRecord>(entity =>
             {
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.HasKey(e => e.WorkRecordId);
 
                 entity.ToTable("SM_WorkRecords");

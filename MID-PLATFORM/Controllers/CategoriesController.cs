@@ -11,79 +11,80 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public CategoriesController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-          if (_context.Periods == null)
+          if (_context.Categories == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<Category>> GetCategory(int id)
         {
-          if (_context.Periods == null)
+          if (_context.Categories == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
-            if (period == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return category;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutCategory(int id, Category category)
         {
-            if (id != period.PeriodId)
+            if (id != category.CategoryId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(category).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            Category modifiedCategory = _context.Categories.FirstOrDefault(u => u.CategoryId == id);
+            if (modifiedCategory == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedCategory.Parent = modifiedCategory.Parent;
+            modifiedCategory.Code = category.Code;
+            modifiedCategory.LongCode = category.LongCode;
+            modifiedCategory.Description = category.Description;
+            modifiedCategory.Title = category.Title;
+            modifiedCategory.Active = category.Active;
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.Categories.Update(modifiedCategory);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +98,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            if (_context.Periods == null)
+            if (_context.Categories == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.Categories'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.Categories.Add(category);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +117,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/Categories/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteCategory(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.Categories == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                category.Active = false;
+                _context.Categories.Update(category);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.Categories.Remove(category);
             }
 
             try
@@ -153,8 +155,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    category.Active = false;
+                    _context.Categories.Update(category);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +173,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool CategoryExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.Categories?.Any(e => e.CategoryId == id)).GetValueOrDefault();
         }
     }
 }

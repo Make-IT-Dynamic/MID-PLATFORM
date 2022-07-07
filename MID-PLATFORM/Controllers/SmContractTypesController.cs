@@ -11,79 +11,78 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class SmContractTypesController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public SmContractTypesController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/SmContractTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<SmContractType>>> GetSmContractTypes()
         {
-          if (_context.Periods == null)
+          if (_context.SmContractTypes == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.SmContractTypes.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/SmContractTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<SmContractType>> GetSmContractType(int id)
         {
-          if (_context.Periods == null)
+          if (_context.SmContractTypes == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var smContractType = await _context.SmContractTypes.FindAsync(id);
 
-            if (period == null)
+            if (smContractType == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return smContractType;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/SmContractTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutSmContractType(int id, SmContractType smContractType)
         {
-            if (id != period.PeriodId)
+            if (id != smContractType.ContractTypeId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(smContractType).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            SmContractType modifiedContractType = _context.SmContractTypes.FirstOrDefault(u => u.ContractTypeId == id);
+            if (modifiedContractType == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedContractType.Description = smContractType.Description;
+            modifiedContractType.AllowExeedHours = smContractType.AllowExeedHours;
+            modifiedContractType.BillableExceedHours = smContractType.BillableExceedHours;
+            modifiedContractType.Active = smContractType.Active;
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.SmContractTypes.Update(modifiedContractType);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!SmContractTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +96,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/SmContractTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<SmContractType>> PostSmContractType(SmContractType smContractType)
         {
-            if (_context.Periods == null)
+            if (_context.SmContractTypes == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.SmContractTypes'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.SmContractTypes.Add(smContractType);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +115,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetSmContractType", new { id = smContractType.ContractTypeId }, smContractType);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/SmContractTypes/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteSmContractType(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.SmContractTypes == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var smContractType = await _context.SmContractTypes.FindAsync(id);
+            if (smContractType == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                smContractType.Active = false;
+                _context.SmContractTypes.Update(smContractType);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.SmContractTypes.Remove(smContractType);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    smContractType.Active = false;
+                    _context.SmContractTypes.Update(smContractType);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool SmContractTypeExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.SmContractTypes?.Any(e => e.ContractTypeId == id)).GetValueOrDefault();
         }
     }
 }

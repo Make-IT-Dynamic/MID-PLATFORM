@@ -11,7 +11,7 @@ namespace MID_PLATFORM.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool? ActiveForSm { get; set; }
-        public bool Canceled { get; set; }
+        public bool Active { get; set; }
         [Timestamp]
         public byte[]? Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;

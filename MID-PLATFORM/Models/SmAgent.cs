@@ -12,7 +12,7 @@ namespace MID_PLATFORM.Models
             SmWorkRecords = new HashSet<SmWorkRecord>();
         }
 
-        public int AgentId { get; set; }
+        public int? AgentId { get; set; }
         public string Code { get; set; } = null!;
         public string? Username { get; set; }
         public string? Name { get; set; }
@@ -20,10 +20,10 @@ namespace MID_PLATFORM.Models
         public double HourCost { get; set; }
         public bool? Active { get; set; }
         [Timestamp]
-        public byte[] Timestamp { get; set; } = null!;
+        public byte[]? Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 
-        public virtual User UserNavigation { get; set; } = null!;
+        public virtual User? UserNavigation { get; set; } = null!;
         public virtual ICollection<SmTask> SmTasks { get; set; }
         public virtual ICollection<SmWorkRecord> SmWorkRecords { get; set; }
     }

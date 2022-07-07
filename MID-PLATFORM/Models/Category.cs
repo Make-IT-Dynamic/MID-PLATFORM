@@ -13,7 +13,7 @@ namespace MID_PLATFORM.Models
             SmTasks = new HashSet<SmTask>();
         }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public int? Parent { get; set; }
         public string Code { get; set; } = null!;
         public string LongCode { get; set; } = null!;
@@ -22,11 +22,11 @@ namespace MID_PLATFORM.Models
         public bool Title { get; set; }
         public bool? Active { get; set; }
         [Timestamp]
-        public byte[] Timestamp { get; set; } = null!;
+        public byte[]? Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 
         public virtual Category? ParentNavigation { get; set; }
-        public virtual User UserNavigation { get; set; } = null!;
+        public virtual User? UserNavigation { get; set; } = null!;
         public virtual ICollection<Category> InverseParentNavigation { get; set; }
         public virtual ICollection<SmContract> SmContracts { get; set; }
         public virtual ICollection<SmTask> SmTasks { get; set; }

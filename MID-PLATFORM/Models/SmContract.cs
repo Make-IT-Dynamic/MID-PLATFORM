@@ -6,7 +6,7 @@ namespace MID_PLATFORM.Models
 {
     public partial class SmContract
     {
-        public int ContractId { get; set; }
+        public int? ContractId { get; set; }
         public string Code { get; set; } = null!;
         public int Instance { get; set; }
         public int Type { get; set; }
@@ -21,14 +21,14 @@ namespace MID_PLATFORM.Models
         public int Status { get; set; }
         public bool? Active { get; set; }
         [Timestamp]
-        public byte[] Timestamp { get; set; } = null!;
+        public byte[]? Timestamp { get; set; } = null!;
         public string User { get; set; } = null!;
 
-        public virtual Category CategoryNavigation { get; set; } = null!;
-        public virtual Company CompanyNavigation { get; set; } = null!;
+        public virtual Category? CategoryNavigation { get; set; } = null!;
+        public virtual Company? CompanyNavigation { get; set; } = null!;
         public virtual Person? ContactPersonNavigation { get; set; }
-        public virtual SmContractStatus StatusNavigation { get; set; } = null!;
-        public virtual SmContractType TypeNavigation { get; set; } = null!;
-        public virtual User UserNavigation { get; set; } = null!;
+        public virtual SmContractStatus? StatusNavigation { get; set; } = null!;
+        public virtual SmContractType? TypeNavigation { get; set; } = null!;
+        public virtual User? UserNavigation { get; set; } = null!;
     }
 }

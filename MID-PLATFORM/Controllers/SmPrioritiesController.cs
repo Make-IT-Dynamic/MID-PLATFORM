@@ -11,79 +11,78 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class SmPrioritiesController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public SmPrioritiesController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/SmPriorities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<SmPriority>>> GetSmPriorities()
         {
-          if (_context.Periods == null)
+          if (_context.SmPriorities == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.SmPriorities.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/SmPriorities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<SmPriority>> GetSmPriority(int id)
         {
-          if (_context.Periods == null)
+          if (_context.SmPriorities == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var smPriority = await _context.SmPriorities.FindAsync(id);
 
-            if (period == null)
+            if (smPriority == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return smPriority;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/SmPriorities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutSmPriority(int id, SmPriority smPriority)
         {
-            if (id != period.PeriodId)
+            if (id != smPriority.PriorityId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(smPriority).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            SmPriority modifiedSmPriority = _context.SmPriorities.FirstOrDefault(u => u.PriorityId == id);
+            if (modifiedSmPriority == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedSmPriority.Description = smPriority.Description;
+            modifiedSmPriority.Active = smPriority.Active;
+
+
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.SmPriorities.Update(modifiedSmPriority);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!SmPriorityExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +96,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/SmPriorities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<SmPriority>> PostSmPriority(SmPriority smPriority)
         {
-            if (_context.Periods == null)
+            if (_context.SmPriorities == null)
             {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
+                return Problem("Entity set 'MIDPlatformContext.SmPriorities'  is null.");
             }
-            _context.Periods.Add(period);
+            _context.SmPriorities.Add(smPriority);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +115,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetSmPriority", new { id = smPriority.PriorityId }, smPriority);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/SmPriorities/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeleteSmPriority(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.SmPriorities == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var smPriority = await _context.SmPriorities.FindAsync(id);
+            if (smPriority == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                smPriority.Active = false;
+                _context.SmPriorities.Update(smPriority);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.SmPriorities.Remove(smPriority);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    smPriority.Active = false;
+                    _context.SmPriorities.Update(smPriority);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool SmPriorityExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.SmPriorities?.Any(e => e.PriorityId == id)).GetValueOrDefault();
         }
     }
 }

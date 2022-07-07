@@ -11,79 +11,78 @@ namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeriodsController : ControllerBase
+    public class PeopleController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
 
-        public PeriodsController(MIDPlatformContext context)
+        public PeopleController(MIDPlatformContext context)
         {
             _context = context;
         }
 
         //READ
-        // GET: api/Periods
+        // GET: api/People
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Period>>> GetPeriods()
+        public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
         {
-          if (_context.Periods == null)
+          if (_context.People == null)
           {
               return NotFound();
           }
-            return await _context.Periods.ToListAsync();
+            return await _context.People.ToListAsync();
         }
 
         //READ
-        // GET: api/Periods/5
+        // GET: api/People/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Period>> GetPeriod(int id)
+        public async Task<ActionResult<Person>> GetPerson(int id)
         {
-          if (_context.Periods == null)
+          if (_context.People == null)
           {
               return NotFound();
           }
-            var period = await _context.Periods.FindAsync(id);
+            var person = await _context.People.FindAsync(id);
 
-            if (period == null)
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return period;
+            return person;
         }
 
         //UPDATE
-        // PUT: api/Periods/5
+        // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPeriod(int id, Period period)
+        public async Task<IActionResult> PutPerson(int id, Person person)
         {
-            if (id != period.PeriodId)
+            if (id != person.PersonId)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(period).State = EntityState.Modified;
+            //_context.Entry(person).State = EntityState.Modified;
 
-            Period modifiedPeriod = _context.Periods.FirstOrDefault(u => u.PeriodId == id);
-            if (modifiedPeriod == null)
+            Person modifiedPerson = _context.People.FirstOrDefault(u => u.PersonId == id);
+            if (modifiedPerson == null)
             {
                 return NotFound();
             }
 
-            modifiedPeriod.Code = period.Code;
-            modifiedPeriod.StartDate = period.StartDate;
-            modifiedPeriod.EndDate = period.EndDate;
-            modifiedPeriod.ActiveForSm = period.ActiveForSm;
-            modifiedPeriod.Active = period.Active;
+            modifiedPerson.Company = person.Company;
+            modifiedPerson.Name = person.Name;
+            modifiedPerson.Email = person.Email;
+            modifiedPerson.Active = person.Active;
 
             try
             {
-                _context.Periods.Update(modifiedPeriod);
+                _context.People.Update(modifiedPerson);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeriodExists(id))
+                if (!PersonExists(id))
                 {
                     return NotFound();
                 }
@@ -97,16 +96,16 @@ namespace MID_PLATFORM.Controllers
         }
 
         //CREATE
-        // POST: api/Periods
+        // POST: api/People
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Period>> PostPeriod(Period period)
+        public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            if (_context.Periods == null)
-            {
-                return Problem("Entity set 'MIDPlatformContext.Periods'  is null.");
-            }
-            _context.Periods.Add(period);
+          if (_context.People == null)
+          {
+              return Problem("Entity set 'MIDPlatformContext.People'  is null.");
+          }
+            _context.People.Add(person);
             try
             {
                 await _context.SaveChangesAsync();
@@ -116,33 +115,34 @@ namespace MID_PLATFORM.Controllers
                 return Problem(e.InnerException.ToString(), null, null, e.Message);
             }
 
-            return CreatedAtAction("GetPeriod", new { id = period.PeriodId }, period);
+            return CreatedAtAction("GetPerson", new { id = person.PersonId }, person);
         }
 
         //DELETE
-        // DELETE: api/Periods/5
+        // DELETE: api/People/5
         [HttpDelete("{id},{disable}")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePeriod(int id, bool disable = false)
+        public async Task<IActionResult> DeletePerson(int id, bool disable = false)
         {
-            if (_context.Periods == null)
+            if (_context.People == null)
             {
                 return NotFound();
             }
-            var period = await _context.Periods.FindAsync(id);
-            if (period == null)
+
+            var person = await _context.People.FindAsync(id);
+            if (person == null)
             {
                 return NotFound();
             }
 
             if (disable)//se for true desativa, se for false apaga
             {
-                period.ActiveForSm = false;
-                _context.Periods.Update(period);
+                person.Active = false;
+                _context.People.Update(person);
             }
             else
             {
-                _context.Periods.Remove(period);
+                _context.People.Remove(person);
             }
 
             try
@@ -153,8 +153,8 @@ namespace MID_PLATFORM.Controllers
             {
                 try
                 {
-                    period.ActiveForSm = false;
-                    _context.Periods.Update(period);
+                    person.Active = false;
+                    _context.People.Update(person);
 
                     return Ok(ex.InnerException);
                 }
@@ -171,9 +171,9 @@ namespace MID_PLATFORM.Controllers
             return Ok();
         }
 
-        private bool PeriodExists(int id)
+        private bool PersonExists(int id)
         {
-            return (_context.Periods?.Any(e => e.PeriodId == id)).GetValueOrDefault();
+            return (_context.People?.Any(e => e.PersonId == id)).GetValueOrDefault();
         }
     }
 }
