@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MID_PLATFORM.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MID_PLATFORM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SmTaskStatusController : ControllerBase
     {
         private readonly MIDPlatformContext _context;
