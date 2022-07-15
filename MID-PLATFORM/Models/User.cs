@@ -33,12 +33,12 @@ namespace MID_PLATFORM.Models
         
         public string Username { get; set; } = null!;
         public string Password { get; set; } = null!;
-        public string Name { get; set; } = null!;
-        public string Email { get; set; } = null!;
+        public string? Name { get; set; } = null!;
+        public string? Email { get; set; } = null!;
         public bool? Active { get; set; }
         [Timestamp]
         public byte[]? Timestamp { get; set; }// = null!;
-        public string User1 { get; set; } = null!;
+        public string? User1 { get; set; } = null!;
 
         public virtual User? User1Navigation { get; set; }// = null!;
         public virtual ICollection<Category> Categories { get; set; }

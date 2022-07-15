@@ -274,6 +274,10 @@ C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\MID-PLATFORM.pdb
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Humanizer.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\MessagePack.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\MessagePack.Annotations.dll
+C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
@@ -302,6 +306,8 @@ C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.EntityF
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.Identity.Client.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
@@ -530,9 +536,3 @@ C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\obj\Debug\net6.0\refint\MID-PLATFO
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\obj\Debug\net6.0\MID-PLATFORM.pdb
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\obj\Debug\net6.0\MID-PLATFORM.genruntimeconfig.cache
 C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\obj\Debug\net6.0\ref\MID-PLATFORM.dll
-C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
-C:\GitHub-Projectos\MID-PLATFORM\MID-PLATFORM\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

@@ -38,7 +38,7 @@ namespace MID_PLATFORM.Repository
                 Subject = new ClaimsIdentity(
                     new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, user.Name)
+                        new Claim(ClaimTypes.Name, user.Username)
                     }),
                 //Expires=DateTime.UtcNow.AddMinutes(15),
                 Expires = DateTime.UtcNow.AddDays(1),
